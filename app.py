@@ -24,19 +24,19 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        # Хэширование пароля
         password_hash = hashlib.sha256(password.encode()).hexdigest()
 
         try:
             connection = pymysql.connect(**DB_CONFIG)
             with connection.cursor() as cursor:
-                sql = "SELECT user_id, username FROM Users WHERE email = %s AND password_hash = %s"
+                sql = "SELECT user_id, username, email FROM Users WHERE email = %s AND password_hash = %s"
                 cursor.execute(sql, (email, password_hash))
                 user = cursor.fetchone()
 
                 if user:
                     session['user_id'] = user['user_id']
                     session['username'] = user['username']
+                    session['email'] = user['email']  # Добавляем email в сессию
                     flash('Вы успешно вошли!', 'success')
                     return redirect(url_for('dashboard'))
                 else:
@@ -105,6 +105,7 @@ def dashboard():
 
     user_id = session['user_id']
     username = session['username']
+    email = session['email']  # Извлекаем email из сессии
 
     try:
         connection = pymysql.connect(**DB_CONFIG)
@@ -118,7 +119,7 @@ def dashboard():
             cursor.execute(sql_bookings, (user_id,))
             bookings = cursor.fetchall()
 
-        return render_template('dashboard.html', username=username, bookings=bookings)
+        return render_template('dashboard.html', username=username, email=email, bookings=bookings)
 
     except Exception as e:
         flash(f'Произошла ошибка: {str(e)}', 'danger')
