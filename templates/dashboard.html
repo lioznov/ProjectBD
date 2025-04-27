@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .profile-info {
+            margin-bottom: 20px;
+        }
+        .bookings-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .bookings-list li {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h2>Личный кабинет</h2>
+    <div class="profile-info">
+        <p><strong>Имя пользователя:</strong> {{ username }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+    </div>
+
+    <h3>Забронированные туры</h3>
+    <ul class="bookings-list">
+        {% for booking in bookings %}
+            <li>
+                <p><strong>Тур:</strong> {{ booking.title }}</p>
+                <p><strong>Статус:</strong> {{ booking.status }}</p>
+                <p><strong>Дата начала:</strong> {{ booking.start_date }}</p>
+                <p><strong>Дата окончания:</strong> {{ booking.end_date }}</p>
+            </li>
+        {% else %}
+            <p>У вас пока нет забронированных туров.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>
