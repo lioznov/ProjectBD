@@ -6,8 +6,75 @@
     <title>Главная страница</title>
 </head>
 <body>
-    <h1>Добро пожаловать!</h1>
-    <p>Если у вас уже есть аккаунт, <a href="/login">войдите</a>.</p>
-    <p>Если вы новый пользователь, <a href="/register">зарегистрируйтесь</a>.</p>
+    <h1>Добро пожаловать{% if username %}, {{ username }}{% endif %}!</h1>
+
+    <!-- Отображение ссылок на вход/выход, регистрацию или личный кабинет -->
+    {% if username %}
+        <p><a href="{{ url_for('logout') }}">Выйти</a> | <a href="{{ url_for('dashboard') }}">Личный кабинет</a></p>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Войти</a> | <a href="{{ url_for('register') }}">Зарегистрироваться</a></p>
+    {% endif %}
+
+    <!-- Форма добавления тура (только для администраторов) -->
+    {% if role == 'admin' %}
+        <h2>Добавить новый тур</h2>
+        <form method="POST" action="/">
+            <label for="title">Название:</label>
+            <input type="text" id="title" name="title" required><br>
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description"></textarea><br>
+            <label for="price">Цена:</label>
+            <input type="number" id="price" name="price" step="0.01" required><br>
+            <label for="country">Страна:</label>
+            <input type="text" id="country" name="country" required><br>
+            <label for="city">Город:</label>
+            <input type="text" id="city" name="city" required><br>
+            <label for="vacation">Тип отдыха:</label>
+            <input type="text" id="vacation" name="vacation"><br>
+            <button type="submit">Добавить тур</button>
+        </form>
+    {% endif %}
+
+    <!-- Список доступных туров -->
+    <h2>Доступные туры</h2>
+    {% if tours %}
+        <table border="1">
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Страна</th>
+                <th>Город</th>
+                <th>Тип отдыха</th>
+                <th>Бронирование</th>
+            </tr>
+            {% for tour in tours %}
+            <tr>
+                <td>{{ tour.title }}</td>
+                <td>{{ tour.description }}</td>
+                <td>{{ tour.price }}</td>
+                <td>{{ tour.country }}</td>
+                <td>{{ tour.city }}</td>
+                <td>{{ tour.vacation }}</td>
+                <td>
+                    {% if username %}
+                        <form method="POST" action="/">
+                            <input type="hidden" name="tour_id" value="{{ tour.tour_id }}">
+                            <label for="start_date_{{ tour.tour_id }}">Дата начала:</label>
+                            <input type="date" id="start_date_{{ tour.tour_id }}" name="start_date" required><br>
+                            <label for="end_date_{{ tour.tour_id }}">Дата окончания:</label>
+                            <input type="date" id="end_date_{{ tour.tour_id }}" name="end_date" required><br>
+                            <button type="submit">Забронировать</button>
+                        </form>
+                    {% else %}
+                        <p>Для бронирования войдите в систему.</p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Пока нет доступных туров.</p>
+    {% endif %}
 </body>
 </html>

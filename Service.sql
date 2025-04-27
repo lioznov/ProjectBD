@@ -1,8 +1,5 @@
-CREATE DATABASE IF NOT EXISTS service;
-USE service;
-
 CREATE TABLE Tours (
-    tour_id INT AUTO_INCREMENT PRIMARY KEY,
+	tour_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
@@ -13,20 +10,21 @@ CREATE TABLE Tours (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_tours_country ON Tours(country);
+CREATE INDEX idx_tours_counrty ON Tours(country);
 CREATE INDEX idx_tours_city ON Tours(city);
-CREATE INDEX idx_tours_vacation ON Tours(vacation);
+CREATE INDEX idx_tours_vacation ON Tours(vacation_type);
 
 CREATE TABLE Users(
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(50) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Bookings(
-    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+	booking_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     tour_id INT NOT NULL,
     booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -38,7 +36,7 @@ CREATE TABLE Bookings(
 );
 
 CREATE TABLE Reviews(
-    review_id INT AUTO_INCREMENT PRIMARY KEY,
+	review_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     tour_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
@@ -49,16 +47,18 @@ CREATE TABLE Reviews(
 );
 
 DELIMITER $$
-	CREATE TRIGGER update_tour_rating
-    AFTER INSERT ON Reviews
-    FOR EACH ROW
-    BEGIN
-		UPDATE Tours
-        SET rating = (
-			SELECT AVG(rating)
-            FROM Reviews
-            WHERE Reviews.tour_id = NEW.tour_id
-        )
-        WHERE tour_id = NEW.tour_id;
-    END$$
+
+CREATE TRIGGER update_tour_rating
+AFTER INSERT ON Reviews
+FOR EACH ROW
+BEGIN
+    UPDATE Tours
+    SET rating = (
+        SELECT AVG(rating)
+        FROM Reviews
+        WHERE Reviews.tour_id = NEW.tour_id
+    )
+    WHERE tour_id = NEW.tour_id;
+END$$
+
 DELIMITER ;
