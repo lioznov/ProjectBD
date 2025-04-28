@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Добро пожаловать, {{ user.username }}</h1>
+    <p>Ваша роль: {{ 'Администратор' if user.role == 'admin' else 'Пользователь' }}</p>
+
+    <h2>Ваши бронирования</h2>
+    <ul>
+        {% for tour in tours_booked %}
+            <li>{{ tour.name }} - {{ tour.destination }} ({{ tour.country }})</li>
+        {% else %}
+            <li>У вас нет бронирований</li>
+        {% endfor %}
+    </ul>
+
+    {% if user.role == 'admin' %}
+        <h2>Управление</h2>
+        <p><a href="{{ url_for('admin_users') }}">Управление пользователями</a></p>
+
+        <h3>Добавить новый тур</h3>
+        <form method="POST" action="{{ url_for('add_tour') }}">
+            <input type="text" name="name" placeholder="Название тура" required>
+            <input type="text" name="destination" placeholder="Направление" required>
+            <input type="text" name="country" placeholder="Страна" required>
+            <input type="number" name="price" placeholder="Цена" step="0.01" required>
+            <textarea name="description" placeholder="Описание"></textarea>
+            <button type="submit">Добавить тур</button>
+        </form>
+
+        <h3>Все туры</h3>
+        <ul>
+            {% for tour in tours_all %}
+                <li>
+                    {{ tour.name }} - {{ tour.destination }} ({{ tour.country }}) ({{ tour.price }} $)
+                    <a href="{{ url_for('confirm_delete_tour', tour_id=tour.id) }}">Удалить</a>
+                </li>
+            {% else %}
+                <li>Туров нет</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ tour.name }}</h1>
+    <p>Направление: {{ tour.destination }}</p>
+    <p>Страна: {{ tour.country }}</p>  <!-- Новое поле -->
+    <p>Цена: ${{ tour.price }}</p>
+    <p>{{ tour.description }}</p>
+    <form method="POST">
+        <button type="submit">Забронировать</button>
+    </form>
+{% endblock %}

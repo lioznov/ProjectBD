@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Управление пользователями</h1>
+        {% for user in users %}
+            <li>
+                {{ user.username }} ({{ user.email }}) - Роль:
+                <form method="POST" action="{{ url_for('update_role', user_id=user.id) }}" style="display:inline;">
+                    <select name="role">
+                        <option value="user" {% if user.role =='user' %}selected{% endif %}>Пользователь</option>
+                        <option value="admin" {% if user.role =='admin' %}selected{% endif %}>Администратор</option>
+                    </select>
+                    <button type="submit">Сохранить</button>  <!-- Добавлена кнопка вместо onchange -->
+                </form>
+            </li>
+        {% else %}
+            <li>Пользователей нет</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('profile') }}">Назад в профиль</a>
+{% endblock %}
