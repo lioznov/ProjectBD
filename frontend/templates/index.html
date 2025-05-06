@@ -10,9 +10,19 @@
             <div class="tour-card">
                 <h2>{{ tour.name }}</h2>
                 <p>Направление: {{ tour.destination }}</p>
-                <p>Страна: {{ tour.country }}</p>  <!-- Новое поле -->
+                <p>Страна: {{ tour.country }}</p>
                 <p>Цена: ${{ tour.price }}</p>
                 <a href="{{ url_for('tour', tour_id=tour.id) }}">Подробности</a>
+                <h3>Отзывы:</h3>
+                {% if tour.reviews %}
+                    <ul>
+                        {% for review in tour.reviews %}
+                            <li>Рейтинг: {{ review.rating }}/5 - {{ review.comment }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Отзывов пока нет.</p>
+                {% endif %}
             </div>
         {% else %}
             <p>Туры не найдены</p>

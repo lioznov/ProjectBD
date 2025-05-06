@@ -2,10 +2,37 @@
 {% block content %}
     <h1>{{ tour.name }}</h1>
     <p>Направление: {{ tour.destination }}</p>
-    <p>Страна: {{ tour.country }}</p>  <!-- Новое поле -->
+    <p>Страна: {{ tour.country }}</p>
     <p>Цена: ${{ tour.price }}</p>
     <p>{{ tour.description }}</p>
-    <form method="POST">
-        <button type="submit">Забронировать</button>
-    </form>
+
+    {% if session.user_id %}
+        <h3>Бронирование</h3>
+        <form method="POST">
+            <input type="hidden" name="action" value="book">
+            <button type="submit">Забронировать</button>
+        </form>
+
+        {% if tour.reviews %}
+            <h3>Отзывы:</h3>
+            <ul>
+                {% for review in tour.reviews %}
+                    <li>Рейтинг: {{ review.rating }}/5 - {{ review.comment }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Отзывов пока нет.</p>
+        {% endif %}
+
+        <h3>Оплата</h3>
+        <form method="POST">
+            <input type="hidden" name="action" value="pay">
+            <input type="text" name="card_number" placeholder="Номер карты (16 цифр)" required>
+            <input type="text" name="expiry_date" placeholder="Срок действия (MM/YY)" required>
+            <input type="text" name="cvv" placeholder="CVV (3 цифры)" required>
+            <button type="submit">Оплатить</button>
+        </form>
+    {% else %}
+        <p>Пожалуйста, <a href="{{ url_for('login') }}">войдите</a>, чтобы забронировать тур.</p>
+    {% endif %}
 {% endblock %}

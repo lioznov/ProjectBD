@@ -2,50 +2,130 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #1a1a1a; /* Темный фон */
+    color: #e0e0e0; /* Светлый текст */
 }
+
 header {
-    background: #333;
-    color: white;
-    padding: 10px;
+    background-color: #2c2c2c; /* Темно-серый фон шапки */
+    color: #ffffff; /* Белый текст */
+    padding: 1em;
+    text-align: center;
+    border-bottom: 1px solid #444; /* Граница для разделения */
 }
+
 nav a {
-    color: white;
-    margin: 0 10px;
+    color: #b0b0b0; /* Светло-серый цвет ссылок */
+    margin: 0 1em;
     text-decoration: none;
+    transition: color 0.3s; /* Плавный переход цвета */
 }
+
+nav a:hover {
+    color: #ffffff; /* Белый цвет при наведении */
+    text-decoration: underline;
+}
+
 main {
-    padding: 20px;
+    padding: 2em;
 }
+
 .tour-list {
     display: flex;
     flex-wrap: wrap;
+    gap: 1em;
 }
+
 .tour-card {
-    border: 1px solid #ccc;
-    margin: 10px;
-    padding: 10px;
+    background-color: #2a2a2a; /* Темно-серый фон карточек */
+    border: 1px solid #444; /* Светло-серые границы */
+    padding: 1em;
     width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Усиленная тень */
+    border-radius: 5px; /* Скругленные углы */
 }
+
 form {
     display: flex;
     flex-direction: column;
     max-width: 300px;
+    margin: 1em 0;
+    background-color: #333; /* Темный фон формы */
+    padding: 1em;
+    border-radius: 5px;
 }
-input, button {
+
+input, textarea, button, select {
     margin: 5px 0;
     padding: 8px;
+    background-color: #3a3a3a; /* Темный фон полей */
+    border: 1px solid #555; /* Светло-серые границы */
+    color: #e0e0e0; /* Светлый текст */
+    border-radius: 4px;
 }
-.flashes {
-    list-style: none;
-    padding: 0;
-    color: green;
-}
-.flashes li {
-    margin: 5px 0;
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #007bff; /* Голубой акцент при фокусе */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 textarea {
-    margin: 5px 0;
-    padding: 8px;
     height: 100px;
+}
+
+button {
+    background-color: #007bff; /* Голубая кнопка */
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Темно-голубой при наведении */
+}
+
+.flashes {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flashes li {
+    background-color: #4a0000; /* Темно-красный фон для сообщений */
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border-left: 5px solid #ff5555; /* Красная полоса */
+    color: #ffcccc; /* Светло-розовый текст */
+    border-radius: 4px;
+}
+
+a {
+    color: #007bff; /* Голубой цвет ссылок */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3; /* Темно-голубой при наведении */
+    text-decoration: underline;
+}
+
+/* Дополнительные стили для улучшения темного дизайна */
+h1, h2, h3 {
+    color: #ffffff; /* Белый цвет заголовков */
+}
+
+p {
+    color: #d0d0d0; /* Светло-серый цвет текста */
+}
+
+select option {
+    background-color: #2a2a2a; /* Темный фон для выпадающих списков */
+    color: #e0e0e0;
+}
+
+select option:hover {
+    background-color: #3a3a3a; /* Темно-серый при наведении */
 }
